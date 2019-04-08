@@ -2,6 +2,20 @@
 Completion for the following test: https://github.com/tembici/desafio-backend
 The proposal for the test is also present in 'instructions.md' file.
 
+## Running the API
+To run the the API run the following:
+
+``` bash
+flask run
+```
+
+Make sure you're that you have dependencies installed.
+
+## Dependencies
++ Python 3.7.3;
++ virtualenv (See 'Virtual Environment');
++ SQLite3 (make sure to have it installed before compiling python, so the lib is present).
+
 ## Virtual Environment
 I'm using a python virtual enviroment, python version 3.7.3. To create a python virtual envivorment run the following, assuming not having the virtualenv installed on your pc and a *NIX system.
 
@@ -14,13 +28,3 @@ virtualenv --python=/path/to/python /path/to/env
 . /path/to/env/bin/active
 pip install -r requirements.txt
 ```
-
-## Running the API
-To run the the API run the following:
-
-``` bash
-flask run
-```
-
-## Notes
-I just did the first commit :). Don't expect more than a 'hello world'.
