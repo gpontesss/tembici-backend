@@ -1,6 +1,6 @@
 # Backend test
 Completion for the following test: https://github.com/tembici/desafio-backend
-The proposal for the test is present in 'instructions.md' file.
+The proposal for the test is also present in 'instructions.md' file.
 
 ## Virtual Environment
 I'm using a python virtual enviroment, python version 3.7.3. To create a python virtual envivorment run the following, assuming not having the virtualenv installed on your pc and a *NIX system.
@@ -19,7 +19,7 @@ pip install -r requirements.txt
 To run the the API run the following:
 
 ``` bash
-python server.py
+flask run
 ```
 
 ## Notes
