@@ -29,7 +29,6 @@ virtualenv --python=/path/to/python /path/to/env
 pip install -r requirements.txt
 ```
 
-## TODO
-+ Check if email already exists (Try catch exceptions);
-+ Hash password and store it;
-+ Check for uuid uniqueness;
+## Notes on choices
+I choosed SQLite3 for simplicity. It is easy to use and reset. But it also has negative aspects. There are not many data types. For the tokens and hashes, the TEXT data type is used. May not be the best or most efficient way of storing them.
+SQLAlchemy helps a lot with Python/SQLite3 interface, mapping objects to tables. I didn't use the flask extension for it for learning reasons.

@@ -1,46 +1,43 @@
-import re
-from server import api, session
+import re, datetime
+from server import api, session, app
 from flask_restful import Resource, reqparse
-from model import User, Phone
+from model import User, Phone, Log
+from util.db import email_exists, user_last_login
 
 # Number regex match
 num = re.compile('^[0-9]+$')
 
-register_parser = reqparse.RequestParser()
-register_parser.add_argument(
+# Parser for SignUp POST requests
+sign_up_parser = reqparse.RequestParser()
+sign_up_parser.add_argument(
     'nome', 
-    help='This field cannot be blank.', 
+    help='Esse campo não pode estar vazio.', 
     required=True, 
     location='json'
 )
-register_parser.add_argument(
+sign_up_parser.add_argument(
     'email', 
-    help='This field cannot be blank.', 
+    help='Esse campo não pode estar vazio.', 
     required=True, 
     location='json'
 )
-register_parser.add_argument(
-    'password', 
-    help='This field cannot be blank.',
+sign_up_parser.add_argument(
+    'senha', 
+    help='Esse campo não pode estar vazio.',
     required=True, 
     location='json'
 )
-register_parser.add_argument(
+sign_up_parser.add_argument(
     'telefones', 
-    help='This field cannot be blank', 
+    help='Esse campo não pode estar vazio', 
     type=list, 
     required=True, 
     location='json'
 )
 
-class UserRegister(Resource):
+class SignUp(Resource):
     def post(self):
-        try:
-            data = register_parser.parse_args()
-        except:
-            return {
-                'mensagem': 'Request deve conter um objeto JSON.'
-            }, 400
+        data = sign_up_parser.parse_args()
         
         # Validate email
         if re.match("^[\w.]+@[\w]+\.[\w]+$", data.email) is None:
@@ -49,7 +46,7 @@ class UserRegister(Resource):
             }, 400
 
         # Email already registered
-        if session.query(User).filter(User.email == data.email).first():
+        if email_exists(data.email):
             return {
                 'mensagem': '{} já foi registrado.'.format(data.email)
             }, 400
@@ -62,12 +59,23 @@ class UserRegister(Resource):
                 }, 400
 
         # Create user ORM
-        user = User(data['nome'], data['email'])
+        user = User(
+            data['nome'], 
+            data['email'], 
+            User.generate_hash(data['senha'])
+        )
         user.phones = [Phone(phone['numero'], phone['ddd']) for phone in data['telefones']]
+
+        token =  Log.generate_token({
+            'sub': user.uuid,
+            'name': user.name,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
+        }, app.config['SECRET_KEY'])
 
         # Add to database
         session.add(user)
-        #session.commit()
+        session.add(Log(user, token))
+        session.commit()
 
         # User registered successfully
         return {
@@ -75,6 +83,6 @@ class UserRegister(Resource):
             'email': user.email,
             'data_criacao': user.creation_date.isoformat(),
             'data_atualizacao': user.update_date.isoformat(),
-            'ultimo_login': user.creation_date.isoformat(),
-            'token': 'not yet'
+            'ultimo_login': user_last_login(user.email).isoformat(),
+            'token': token.decode('UTF-8')
         }, 201

@@ -15,7 +15,8 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     creation_date INTEGER NOT NULL,
-    update_date INTEGER NOT NULL
+    update_date INTEGER NOT NULL,
+    password TEXT NOT NULL
 )
 """)
 
@@ -31,17 +32,19 @@ CREATE TABLE phones (
 )
 """)
 
-# --- Creating "password" table ---
+# --- Creating "log" table ---
+print('Creating "log" table.')
 cursor.execute("""
-CREATE TABLE password (
+CREATE TABLE log (
     uuid TEXT(32) PRIMARY KEY,
     user_uuid TEXT(32) NOT NULL,
-    hash_password TEXT(64) NOT NULL,
+    date INTEGER NOT NULL,
+    token TEXT NOT NULL,
     FOREIGN KEY(user_uuid) REFERENCES users(uuid)
 )
 """)
 
-# Registering data
+# Executing everything
 conn.commit()
 
 conn.close()

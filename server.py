@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 # Flask setup
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'tembici'
 api = Api(app)
 
 # Error handling for 404 Not Found requests
@@ -28,4 +29,5 @@ session = Session()
 import views, resources
 
 # Registering routes
-api.add_resource(resources.UserRegister, '/register')
+api.add_resource(resources.SignUp, '/sign_up')
+api.add_resource(resources.SignIn, '/sign_in')
