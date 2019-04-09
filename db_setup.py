@@ -19,14 +19,6 @@ CREATE TABLE users (
 )
 """)
 
-mock_uuid = uuid.uuid4().hex
-# Mock data for "users" table
-print('Generating mock data for "users" table.')
-cursor.execute("""
-INSERT INTO users (uuid, name, email, creation_date, update_date)
-VALUES ('{}', 'Guilherme Pontes', 'pontes.guisilva@gmail.com', date('now'), date('now'))
-""".format(mock_uuid))
-
 # --- Creating "phones" table ---
 print('Creating "phones" table.')
 cursor.execute("""
@@ -39,12 +31,6 @@ CREATE TABLE phones (
 )
 """)
 
-print('Generating mock data for "phones" table.')
-cursor.execute("""
-INSERT INTO phones (uuid, user_uuid, phone, ddd)
-VALUES ('{}', '{}', '992139309', '11')
-""".format(uuid.uuid4().hex, mock_uuid))
-
 # --- Creating "password" table ---
 cursor.execute("""
 CREATE TABLE password (
@@ -54,12 +40,6 @@ CREATE TABLE password (
     FOREIGN KEY(user_uuid) REFERENCES users(uuid)
 )
 """)
-
-print('Generating password for mock users.')
-cursor.execute("""
-INSERT INTO password (uuid, user_uuid, hash_password)
-VALUES ('{}', '{}', '{}')
-""".format(uuid.uuid4().hex, mock_uuid, sha256(b'secret').hexdigest()))
 
 # Registering data
 conn.commit()
