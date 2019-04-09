@@ -9,7 +9,7 @@ To run the the API run the following:
 flask run
 ```
 
-Make sure you're that you have dependencies installed.
+Make sure that you have dependencies installed.
 
 ## Dependencies
 + Python 3.7.3;
