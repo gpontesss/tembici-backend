@@ -23,4 +23,7 @@ class Log(Base):
     def generate_token(payload, secret, algorithm='HS256'):
         return jwt.encode(payload, secret, algorithm=algorithm)
 
+    def verify_token(token, secret, algorithm='HS256'):
+        return jwt.decode(token, secret, algorithm=algorithm)
+
 

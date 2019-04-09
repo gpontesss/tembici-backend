@@ -31,3 +31,4 @@ import views, resources
 # Registering routes
 api.add_resource(resources.SignUp, '/sign_up')
 api.add_resource(resources.SignIn, '/sign_in')
+api.add_resource(resources.SearchUser, '/search_user/<user_id>')

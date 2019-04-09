@@ -1,6 +1,4 @@
 import sqlite3 as sql
-import uuid
-from hashlib import sha256
 
 print('Creating database "tembici-test.db"')
 conn = sql.connect('tembici-test.db')
@@ -44,7 +42,6 @@ CREATE TABLE log (
 )
 """)
 
-# Executing everything
+# Excute everything and cease action
 conn.commit()
-
 conn.close()

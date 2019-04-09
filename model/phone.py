@@ -16,3 +16,9 @@ class Phone(Base):
         self.uuid = uuid4().hex
         self.phone = phone
         self.ddd = ddd
+
+    def to_obj(self):
+        return {
+            'numero': self.phone,
+            'ddd': self.ddd
+        }

@@ -34,7 +34,7 @@ class SignIn(Resource):
         token =  Log.generate_token({
             'sub': user.uuid,
             'name': user.name,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }, app.config['SECRET_KEY'])
 
         log = Log(user, token)
@@ -49,6 +49,6 @@ class SignIn(Resource):
             'email': user.email,
             'data_criacao': user.creation_date.isoformat(),
             'data_atualizacao': user.update_date.isoformat(),
-            'ultimo_login': user_last_login(user.email).isoformat(),
+            'ultimo_login': user_last_login(user.email).date.isoformat(),
             'token': token.decode('UTF-8')
         }, 201

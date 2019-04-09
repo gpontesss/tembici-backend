@@ -27,6 +27,18 @@ class User(Base):
         self.update_date = self.creation_date
         self.password = password
 
+    def to_obj(self):
+        import util.db
+        return {
+            'nome': self.name,
+            'email': self.email,
+            'senha': self.password,
+            'data_criacao': self.creation_date.isoformat(),
+            'data_atualizacao': self.update_date.isoformat(),
+            'ultimo_login': util.db.user_last_login(self.email).date.isoformat(),
+            'telefones': [p.to_obj() for p in self.phones]
+        }
+
     @staticmethod
     def generate_hash(password):
         return sha256.hash(password)
