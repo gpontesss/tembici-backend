@@ -4,6 +4,5 @@
 rm -f *.db
 echo "Database deleted."
 
-# Create database, tables and add mock data
+# Create database and tables
 python db_setup.py
-python mock_create.py

@@ -4,7 +4,7 @@ from datetime import date
 from uuid import uuid4
 from sqlalchemy import Column, String, Date
 from sqlalchemy.orm import relationship
-from .phone import Phone
+from model import Phone
 from server import Base
 
 class User(Base):

@@ -35,24 +35,46 @@ register_parser.add_argument(
 
 class UserRegister(Resource):
     def post(self):
-        data = register_parser.parse_args()
+        try:
+            data = register_parser.parse_args()
+        except:
+            return {
+                'mensagem': 'Request deve conter um objeto JSON.'
+            }, 400
         
         # Validate email
         if re.match("^[\w.]+@[\w]+\.[\w]+$", data.email) is None:
-            return {'email': 'Not a valid email.'}, 400
+            return {
+                'mensagem': '{} não é um email válido.'.format(data.email)
+            }, 400
+
+        # Email already registered
+        if session.query(User).filter(User.email == data.email).first():
+            return {
+                'mensagem': '{} já foi registrado.'.format(data.email)
+            }, 400
 
         # Validate phone numbers
         for phone in data['telefones']:
             if num.match(phone['numero']) is None or num.match(phone['ddd']) is None:
-                return {'telefone': '{} {} is not a valid phone number'.format(phone['ddd'], phone['numero'])}, 400
+                return {
+                    'mensagem': '{} {} não é um numero de telefone válido.'.format(phone['ddd'], phone['numero'])
+                }, 400
 
         # Create user ORM
         user = User(data['nome'], data['email'])
-        for phone in data['telefones']:
-            user.phones.append(Phone(phone['numero'], phone['ddd']))
+        user.phones = [Phone(phone['numero'], phone['ddd']) for phone in data['telefones']]
 
         # Add to database
         session.add(user)
-        session.commit()
+        #session.commit()
 
-        return data, 201
+        # User registered successfully
+        return {
+            'id': user.uuid,
+            'email': user.email,
+            'data_criacao': user.creation_date.isoformat(),
+            'data_atualizacao': user.update_date.isoformat(),
+            'ultimo_login': user.creation_date.isoformat(),
+            'token': 'not yet'
+        }, 201
