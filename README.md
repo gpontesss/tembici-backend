@@ -28,3 +28,8 @@ virtualenv --python=/path/to/python /path/to/env
 . /path/to/env/bin/active
 pip install -r requirements.txt
 ```
+
+## TODO
++ Check if email already exists (Try catch exceptions);
++ Hash password and store it;
++ Check for uuid uniqueness;
