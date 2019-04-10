@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+    resources.sign_up
+    ----
+    SignUp endpoint for registering user.
+"""
+
 import re, datetime
 from server import api, session, app
 from flask_restful import Resource, reqparse
@@ -36,7 +43,33 @@ sign_up_parser.add_argument(
 )
 
 class SignUp(Resource):
+    """ Endpoint for user sign up.
+
+        HTTP Methods:
+            POST
+    """
+
     def post(self):
+        """ Registers user on database with JSON object data.
+
+            Headers:
+                Content-Type: application/json
+
+            JSON Request format:
+            {
+                "nome": nome,
+                "email": email,
+                "senha": senha,
+                "telefones": [
+                    {
+                        "numero": numero,
+                        "ddd": ddd
+                    },
+                    ...
+                ]
+            }
+        """
+
         data = sign_up_parser.parse_args()
         
         # Validate email
@@ -66,6 +99,7 @@ class SignUp(Resource):
         )
         user.phones = [Phone(phone['numero'], phone['ddd']) for phone in data['telefones']]
 
+        # Generate token
         token =  Log.generate_token({
             'sub': user.uuid,
             'name': user.name,

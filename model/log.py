@@ -1,7 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+    model.log
+    ----
+    Log ORM for registering user's logs.
+"""
+
 import datetime, jwt
 from uuid import uuid4
+
 from sqlalchemy import Column, DateTime, String, ForeignKey
 from sqlalchemy.orm import relationship
+
 from model import User
 from server import Base
 

@@ -1,4 +1,9 @@
-# Phone Object Relational Mapper
+# -*- coding: utf-8 -*-
+"""
+    model.phone
+    ----
+    Phone ORM for registering user's phones.
+"""
 
 from uuid import uuid4
 from sqlalchemy import Column, String, ForeignKey
@@ -17,6 +22,8 @@ class Phone(Base):
         self.phone = phone
         self.ddd = ddd
 
+    """ Returns Phone as JSON serializable.
+    """
     def to_obj(self):
         return {
             'numero': self.phone,

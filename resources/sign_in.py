@@ -1,8 +1,15 @@
+# -*- coding: utf-8 -*-
+"""
+    resources.sign_in
+    ----
+    SignIn endpoint for user login.
+"""
+
 import datetime
 from flask_restful import Resource, reqparse
 from server import api, session, app
 from model import User, Log
-from util.db import email_exists, user_hash, get_user_by_email, user_last_login
+from util.db import email_exists, get_user_hash, get_user_by_email, user_last_login
 
 # Parser for SignIn POST requests
 sign_in_parser = reqparse.RequestParser()
@@ -20,16 +27,35 @@ sign_in_parser.add_argument(
 )
 
 class SignIn(Resource):
+    """ Endpoint for user login.
+
+        HTTP Methods:
+            POST
+    """
+
     def post(self):
+        """ Logins user according to JSON object data.
+
+            Headers:
+                Content-Type: application/json
+
+            JSON Request format:
+            {
+                "email": email,
+                "senha": senha
+            }
+        """
+
         data = sign_in_parser.parse_args()
 
         # Email exists/Verify password hash
         if not email_exists(data['email']) or \
-        not User.verify_hash(data['senha'], user_hash(data['email'])):
+        not User.verify_hash(data['senha'], get_user_hash(data['email'])):
             return {
                 'mensagem': 'Usuário e/ou senha inválidos.'
             }, 401
         
+        # Generate token
         user = get_user_by_email(data['email'])
         token =  Log.generate_token({
             'sub': user.uuid,

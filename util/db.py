@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+    util.db
+    ----
+    Generic functions for querying database.
+"""
+
 from server import api, session
 from model import User, Log
 
@@ -9,7 +16,7 @@ def get_user_by_email(user_email):
 		.filter(User.email == user_email) \
 		.first()
 
-def user_hash(user_email):
+def get_user_hash(user_email):
 	return get_user_by_email(user_email).password
 
 def user_last_login(user_email):

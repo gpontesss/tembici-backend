@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+    db_setup.py
+    -----------
+    Script for creating database and tables.
+    
+"""
+
 import sqlite3 as sql
 
 print('Creating database "tembici-test.db"')

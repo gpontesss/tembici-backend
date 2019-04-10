@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+    util.auth
+    ----
+    Authorization and validation related funcions.
+"""
+
 import jwt
 from flask import request
 from server import app, session
@@ -5,6 +12,14 @@ from model import Log
 from functools import wraps
 
 def token_required(f):
+    """
+        Decorator for endpoints that require authorization.
+        Checks if 'Authoration' header has registered token
+        and if it is not expired. If validation is correct
+        execute endpoint decorated.
+        Returns 403 HTTP status if validation fails.
+    """
+
     @wraps(f)
     def decorated(*args, **kwargs):
         try:

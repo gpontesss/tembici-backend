@@ -1,10 +1,17 @@
-# User Object Relational Mapper
-
+# -*- coding: utf-8 -*-
+"""
+    model.user
+    ----
+    User ORM for registering users.
+"""
 import datetime
+
 from uuid import uuid4
 from passlib.hash import pbkdf2_sha256 as sha256
+
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.orm import relationship
+
 from model import Phone
 from server import Base
 
@@ -27,6 +34,8 @@ class User(Base):
         self.update_date = self.creation_date
         self.password = password
 
+    """ Returns User as JSON serializable.
+    """
     def to_obj(self):
         import util.db
         return {
