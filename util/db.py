@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    util.db
+    util.db.py
     ----
     Generic functions for querying database.
 """

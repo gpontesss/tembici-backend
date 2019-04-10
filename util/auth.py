@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    util.auth
+    util.auth.py
     ----
     Authorization and validation related funcions.
 """

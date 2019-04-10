@@ -1,5 +1,5 @@
 # Backend test
-Completion for the following test: https://github.com/tembici/desafio-backend
+Completion for the following test: https://github.com/tembici/desafio-backend.
 The proposal for the test is also present in 'instructions.md' file.
 
 ## Running the API
@@ -33,7 +33,3 @@ pip install -r requirements.txt
 ## Notes on choices
 I choosed SQLite3 for simplicity. It is easy to use and reset. But it also has negative aspects. There are not many data types. For the tokens and hashes, the TEXT data type is used. May not be the best or most efficient way of storing them.
 SQLAlchemy helps a lot with Python/SQLite3 interface, mapping objects to tables. I didn't use the flask extension for it for learning reasons.
-
-## To do
-+ It is working, but it still needs some refactoring;
-+ Add unit tests.
